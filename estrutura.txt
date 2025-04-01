@@ -1,0 +1,16 @@
+produto-minerador/
+├── src/
+│   ├── services/
+│   │   ├── mercadoLivre.js         // Busca produtos na API do Mercado Livre
+│   │   ├── afiliados.js            // Geração de links de afiliado
+│   │   ├── sheets.js               // Integração com Google Sheets
+│   │   └── db.js                   // Operações no Supabase (PostgreSQL)
+│   ├── utils/
+│   │   ├── filtroProdutos.js       // Filtra produtos em promoção e calcula score
+│   │   └── gerarPalavrasChave.js   // Gera keywords via OpenAI (modelo JSON)
+│   └── index.js                    // Ponto de entrada e orquestração do fluxo
+├── database/
+│   └── schema.sql                  // Script SQL para criação das tabelas no Supabase
+├── .env                            // Variáveis de ambiente (preencha com seus dados)
+├── package.json
+└── README.md
