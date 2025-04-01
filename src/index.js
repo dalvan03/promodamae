@@ -28,14 +28,15 @@ const TOTAL_PRODUTOS_POR_NICHO = 30;
 // Função para executar a mineração para todos os nichos
 async function executarMineracao() {
   console.log(`[${dayjs().format()}] Iniciando mineração diária...`);
+  console.log("SUPABASE_URL:", process.env.SUPABASE_URL);
 
   for (const nicho of nichos) {
     console.log(`Processando nicho: ${nicho}`);
 
     try {
       // 1. Gerar (opcional) palavras-chave via OpenAI (pode ser usado para enriquecer a busca)
-      // const keywords = await gerarPalavrasChave(nicho);
-      // console.log(`Palavras-chave geradas para ${nicho}: ${keywords.join(', ')}`);
+      const keywords = await gerarPalavrasChave(nicho);
+      console.log(`Palavras-chave geradas para ${nicho}: ${keywords.join(', ')}`);
 
       // 2. Buscar produtos no Mercado Livre para o nicho
       const produtosBrutos = await buscarProdutosPorNicho(nicho);
@@ -120,4 +121,4 @@ cron.schedule('0 3 * * *', () => {
 });
 
 // Para execução imediata (ex: durante testes), descomente a linha abaixo:
-// executarMineracao();
+executarMineracao();
