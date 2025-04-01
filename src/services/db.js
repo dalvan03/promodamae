@@ -20,6 +20,7 @@ const supabase = createClient(supabaseUrl, supabaseAnonKey);
  * @returns {Promise<Array>} Dados do produto inserido/atualizado ou null em caso de erro
  */
 async function upsertProduto(produto) {
+  console.log("upsertProduto started:", produto);
   const { data, error } = await supabase
     .from('produtos') // Especifica a tabela 'produtos'
     .upsert({
@@ -39,6 +40,7 @@ async function upsertProduto(produto) {
     console.error('Erro no upsert do produto:', error.message);
     return null;
   }
+  console.log("upsertProduto successful:", data);
   // Retorna os dados do produto inserido ou atualizado
   return data;
 }
@@ -54,6 +56,7 @@ async function upsertProduto(produto) {
  * @returns {Promise<Array>} Dados inseridos ou null em caso de erro
  */
 async function inserirHistoricoPreco(produtoId, precoOriginal, precoAtual, dataColeta) {
+  console.log("inserirHistoricoPreco started:", { produtoId, precoOriginal, precoAtual, dataColeta });
   const { data, error } = await supabase
     .from('historico_preco') // Especifica a tabela 'historico_preco'
     .insert([
@@ -76,6 +79,7 @@ async function inserirHistoricoPreco(produtoId, precoOriginal, precoAtual, dataC
     console.error('Erro ao inserir histórico de preço:', error.message);
     return null;
   }
+  console.log("inserirHistoricoPreco successful:", data);
   // Retorna os dados inseridos na tabela
   return data;
 }

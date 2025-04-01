@@ -12,6 +12,7 @@ const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
  * @returns {Promise<Array>} Array de palavras-chave
  */
 async function gerarPalavrasChave(tema) {
+  console.log("gerarPalavrasChave started:", tema);
   try {
     // Criar o prompt para a API da OpenAI, solicitando 5 palavras-chave únicas
     const prompt = `For the theme "${tema}", generate a JSON object with exactly 5 unique, relevant keywords.
@@ -44,6 +45,7 @@ Return only the JSON object without any extra text or explanation.`;
     // Extrair o conteúdo da resposta da API e convertê-lo de JSON para objeto
     const content = response.data.choices[0].message.content.trim();
     const jsonResponse = JSON.parse(content);
+    console.log("gerarPalavrasChave response received:", jsonResponse);
 
     // Validar se a resposta contém o array de palavras-chave
     if (!jsonResponse.keywords || !Array.isArray(jsonResponse.keywords)) {
@@ -54,8 +56,11 @@ Return only the JSON object without any extra text or explanation.`;
     const keywords = [...new Set(jsonResponse.keywords.map(kw => kw.trim()).filter(Boolean))];
     if (keywords.length !== 5) {
       console.warn(`Expected 5 keywords, but got ${keywords.length}. Truncating to 5.`);
-      return keywords.slice(0, 5); // Truncar para 5 palavras-chave, se necessário
+      const truncated = keywords.slice(0, 5);
+      console.log("gerarPalavrasChave completed with truncated keywords:", truncated);
+      return truncated; // Truncar para 5 palavras-chave, se necessário
     }
+    console.log("gerarPalavrasChave completed successfully:", keywords);
     return keywords;
   } catch (error) {
     // Capturar e exibir erros, retornando um array vazio como fallback

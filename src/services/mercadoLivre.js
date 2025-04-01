@@ -7,6 +7,7 @@ const axios = require('axios');
  * @returns {Promise<Array>} Array de produtos
  */
 async function buscarProdutosPorNicho(nicho) {
+  console.log("buscarProdutosPorNicho started for niche:", nicho);
   try {
     // Configurar a URL de busca com a palavra-chave e limitar os resultados
     const limit = 100; // Define o número máximo de produtos retornados pela API
@@ -17,6 +18,7 @@ async function buscarProdutosPorNicho(nicho) {
 
     // Verifica se a resposta contém dados e retorna os produtos formatados
     if (response.data && response.data.results) {
+      console.log("buscarProdutosPorNicho completed. Total products:", response.data.results.length);
       // Mapeia os produtos retornados para incluir apenas os campos essenciais
       return response.data.results.map(produto => ({
         meli_id: produto.id, // ID único do produto no Mercado Livre

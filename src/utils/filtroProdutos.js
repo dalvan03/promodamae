@@ -6,6 +6,7 @@
  * @returns {Array} Array de produtos filtrados e ordenados por score (decrescente)
  */
 function filtrarProdutosPromocao(produtos) {
+    console.log("filtrarProdutosPromocao started. Total produtos:", produtos.length);
     // Filtrar somente produtos que possuem:
     // - Preço original (original_price) maior que o preço atual (price)
     // - Campos essenciais como thumbnail (imagem), permalink (link), e title (título)
@@ -24,8 +25,9 @@ function filtrarProdutosPromocao(produtos) {
       return { ...p, descontoPct, score };
     });
   
-    // Ordenar os produtos filtrados em ordem decrescente de score (do maior para o menor)
-    return filtrados.sort((a, b) => b.score - a.score);
+    const sortedProdutos = filtrados.sort((a, b) => b.score - a.score);
+    console.log("filtrarProdutosPromocao completed. Total filtered produtos:", sortedProdutos.length);
+    return sortedProdutos;
 }
   
 module.exports = filtrarProdutosPromocao;

@@ -55,6 +55,7 @@ async function executarMineracao() {
       let dadosSheets = [];
 
       for (const produto of produtosSelecionados) {
+        console.log("Processing product:", produto.meli_id);
         // Gerar link de afiliado
         produto.link_afiliado = gerarLinkAfiliado(produto.permalink);
 

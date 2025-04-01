@@ -9,6 +9,7 @@ require('dotenv').config();
  * @returns {string} URL com parâmetros de afiliado
  */
 function gerarLinkAfiliado(urlOriginal) {
+  console.log("gerarLinkAfiliado started for URL:", urlOriginal);
   // Base do link de afiliado, obtida das variáveis de ambiente ou com valor padrão
   const base = process.env.AFILIADO_BASE_URL || 'https://www.mercadolivre.com.br/oferta?url=';
   
@@ -18,8 +19,10 @@ function gerarLinkAfiliado(urlOriginal) {
   // Codifica o URL original para ser usado como parâmetro em um link
   const urlEncoded = encodeURIComponent(urlOriginal);
   
+  const linkAfiliado = `${base}${urlEncoded}&aff_id=${afiliadoId}`;
+  console.log("gerarLinkAfiliado generated link:", linkAfiliado);
   // Retorna o link completo com os parâmetros de afiliado
-  return `${base}${urlEncoded}&aff_id=${afiliadoId}`;
+  return linkAfiliado;
 }
 
 // Exporta a função para uso em outros módulos
