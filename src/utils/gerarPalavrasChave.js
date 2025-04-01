@@ -13,6 +13,7 @@ const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
  */
 async function gerarPalavrasChave(tema) {
   try {
+    // Criar o prompt para a API da OpenAI, solicitando 5 palavras-chave únicas
     const prompt = `For the theme "${tema}", generate a JSON object with exactly 5 unique, relevant keywords.
 The JSON must have the following format:
 {
@@ -20,38 +21,44 @@ The JSON must have the following format:
 }
 Return only the JSON object without any extra text or explanation.`;
 
+    // Fazer a requisição para a API da OpenAI usando o modelo GPT-3.5-turbo
     const response = await axios.post(
       'https://api.openai.com/v1/chat/completions',
       {
-        model: "gpt-3.5-turbo",
+        model: "gpt-3.5-turbo", // Modelo utilizado para gerar as palavras-chave
         messages: [
-          { role: "system", content: "You are a helpful assistant." },
-          { role: "user", content: prompt }
+          { role: "system", content: "You are a helpful assistant." }, // Define o comportamento do modelo
+          { role: "user", content: prompt } // Envia o prompt com o tema para a API
         ],
-        temperature: 0.7,
-        max_tokens: 150
+        temperature: 0.7, // Controla a criatividade da resposta (valores mais baixos = respostas mais previsíveis)
+        max_tokens: 150 // Limita o número de tokens na resposta para evitar respostas muito longas
       },
       {
         headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${OPENAI_API_KEY}`
+          'Content-Type': 'application/json', // Define o tipo de conteúdo da requisição
+          'Authorization': `Bearer ${OPENAI_API_KEY}` // Autenticação com a chave da API
         }
       }
     );
 
+    // Extrair o conteúdo da resposta da API e convertê-lo de JSON para objeto
     const content = response.data.choices[0].message.content.trim();
     const jsonResponse = JSON.parse(content);
+
+    // Validar se a resposta contém o array de palavras-chave
     if (!jsonResponse.keywords || !Array.isArray(jsonResponse.keywords)) {
       throw new Error("Invalid JSON structure: missing 'keywords' array");
     }
-    // Garantir unicidade e exatamente 5 palavras
+
+    // Garantir que as palavras-chave sejam únicas, não vazias e exatamente 5
     const keywords = [...new Set(jsonResponse.keywords.map(kw => kw.trim()).filter(Boolean))];
     if (keywords.length !== 5) {
       console.warn(`Expected 5 keywords, but got ${keywords.length}. Truncating to 5.`);
-      return keywords.slice(0, 5);
+      return keywords.slice(0, 5); // Truncar para 5 palavras-chave, se necessário
     }
     return keywords;
   } catch (error) {
+    // Capturar e exibir erros, retornando um array vazio como fallback
     console.error("Erro ao gerar palavras-chave:", error.message);
     return [];
   }

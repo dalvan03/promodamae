@@ -9,25 +9,29 @@ const axios = require('axios');
 async function buscarProdutosPorNicho(nicho) {
   try {
     // Configurar a URL de busca com a palavra-chave e limitar os resultados
-    const limit = 100; // Buscar mais resultados para ter variedade
+    const limit = 100; // Define o número máximo de produtos retornados pela API
     const url = `https://api.mercadolibre.com/sites/MLB/search?q=${encodeURIComponent(nicho)}&limit=${limit}&sort=price_asc`;
 
+    // Faz a requisição HTTP para a API do Mercado Livre
     const response = await axios.get(url);
+
+    // Verifica se a resposta contém dados e retorna os produtos formatados
     if (response.data && response.data.results) {
-      // Retorna os produtos com os campos essenciais
+      // Mapeia os produtos retornados para incluir apenas os campos essenciais
       return response.data.results.map(produto => ({
-        meli_id: produto.id,
-        title: produto.title,
-        price: produto.price,
-        original_price: produto.original_price || null,
-        permalink: produto.permalink,
-        thumbnail: produto.thumbnail,
-        sold_quantity: produto.sold_quantity || 0,
-        rating: produto.rating_average || null  // Pode vir de outro endpoint se disponível
+        meli_id: produto.id, // ID único do produto no Mercado Livre
+        title: produto.title, // Título do produto
+        price: produto.price, // Preço atual do produto
+        original_price: produto.original_price || null, // Preço original (se disponível)
+        permalink: produto.permalink, // Link para a página do produto
+        thumbnail: produto.thumbnail, // URL da imagem do produto
+        sold_quantity: produto.sold_quantity || 0, // Quantidade vendida
+        rating: produto.rating_average || null // Avaliação média (se disponível)
       }));
     }
-    return [];
+    return []; // Retorna um array vazio se não houver produtos
   } catch (error) {
+    // Captura e exibe erros no console
     console.error('Erro ao buscar produtos no Mercado Livre:', error.message);
     return [];
   }
