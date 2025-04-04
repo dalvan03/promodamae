@@ -9,19 +9,25 @@ const gerarLinkAfiliado = require('./services/afiliados');
 const salvarNaPlanilha = require('./services/sheets');
 const { upsertProduto, inserirHistoricoPreco } = require('./services/db');
 const gerarPalavrasChave = require('./utils/gerarPalavrasChave');
+const { searchProducts } = require('./services/amazon');
+
+// Exemplo de uso:
+searchProducts('smartphone', 'Electronics', 'BR')
+  .then(results => {
+    console.log('Produtos encontrados:', results);
+    // Aqui você poderia filtrar apenas os que têm desconto:
+    const promoResults = results.filter(prod => prod.originalPrice && prod.price && prod.originalPrice !== prod.price);
+    // ...e então postar ou processar esses produtos promocionais.
+  })
+  .catch(err => {
+    console.error('Erro na busca Amazon:', err.message);
+  });
+
 
 // Lista de 50 nichos (palavras-chave genéricas)
 // Exemplo simplificado; substitua pelos 50 nichos desejados
 const nichos = [
-  'maquiagem artística', 'motos de trilha', 'camionetes gipe', 'carros de arrancada',
-  'itens para bebês', 'itens de cozinha', 'moda feminina', 'tecnologia', 'decoração', 'livros',
-  'esportes', 'fitness', 'jardinagem', 'brinquedos', 'eletrônicos', 'acessórios de moda',
-  'viagens', 'automóveis', 'pet shop', 'música', 'arte', 'culinária', 'beleza', 'hardware',
-  'software', 'jogos', 'ferramentas', 'casamento', 'escolar', 'oficina', 'calçados',
-  'móveis', 'relógios', 'óculos', 'papelaria', 'instrumentos musicais', 'acampamento',
-  'moda masculina', 'produtos ecológicos', 'produtos de luxo', 'produtos infantis', 'sustentabilidade',
-  'produtos para escritório', 'produtos para home office', 'saúde', 'bem-estar', 'produtos esportivos', 'energia'
-];
+  'maquiagem artística'];
 
 const TOTAL_PRODUTOS_POR_NICHO = 30;
 
@@ -29,6 +35,7 @@ const TOTAL_PRODUTOS_POR_NICHO = 30;
 async function executarMineracao() {
   console.log(`[${dayjs().format()}] Iniciando mineração diária...`);
   console.log("SUPABASE_URL:", process.env.SUPABASE_URL);
+  console.log("MELI_ACCESS_TOKEN:", process.env.MELI_ACCESS_TOKEN || 'Token não definido'); // Log do token
 
   for (const nicho of nichos) {
     console.log(`Processando nicho: ${nicho}`);

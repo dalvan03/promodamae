@@ -5,14 +5,14 @@ produto-minerador/
 │   │   ├── afiliados.js            // Já existente – gera link de afiliado
 │   │   ├── sheets.js               // Já existente – envia para Google Sheets
 │   │   ├── db.js                   // Já existente – operações no Supabase
-│   │   ├── textPoster.js           // Novo – gera textos para postagens via OpenAI
-│   │   ├── imageGenerator.js       // Novo – gera imagens a partir de um template PSD
-│   │   └── socialPoster.js         // Novo – faz as postagens nas redes sociais (Instagram e Facebook)
+│   │   ├── textPoster.js           // Já existente – gera textos para postagens via OpenAI
+│   │   ├── imageGenerator.js       // Já existente – gera imagens a partir de um template PSD
+│   │   └── socialPoster.js         // Já existente – faz as postagens nas redes sociais (Instagram e Facebook)
 │   ├── utils/
 │   │   ├── filtroProdutos.js       // Já existente – filtra e calcula score
 │   │   └── gerarPalavrasChave.js   // Já existente – gera keywords via OpenAI (opcional)
 │   └── index.js                    // Ponto de entrada da mineração (já existente)
-│   └── index_social.js             // Novo – Orquestra o fluxo de postagem nas redes sociais
+│   └── index_social.js             // Orquestra o fluxo de postagem nas redes sociais
 ├── database/
 │   └── schema.sql                  // Já existente – criação das tabelas no Supabase
 ├── .env                            // Variáveis de ambiente (inclua também os dados do Instagram/Facebook)
